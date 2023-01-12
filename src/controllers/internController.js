@@ -17,7 +17,7 @@ const createIntern = async (req, res) => {
 
     const { name, email, mobile, collegeName } = data;
 
-    if (Object.keys(data).length === 0) return res.status(400).send({msg:"Please send data in the Body"});
+    if (Object.keys(data).length === 0) return res.status(400).send({status:false, msg:"Please send data in the Body"});
      
     if (!name || !validate.test(name)) return res.status(400).send({ status: false, msg: "Please provide valid Name" });
 
@@ -27,7 +27,7 @@ const createIntern = async (req, res) => {
 
     if (checkEmail) return res.status(400).send({ status: false, msg: "intern Email already exist" });
       
-    if (!mobile || !validateMobile.test(mobile)) return res.status(400).send({ msg: "enter valid contact number" });
+    if (!mobile || !validateMobile.test(mobile)) return res.status(400).send({status:false, msg: "enter valid contact number" });
       
     let checkMobile = await internModel.findOne({ mobile: mobile });
 
@@ -37,7 +37,7 @@ const createIntern = async (req, res) => {
       
     let findCollege = await collegeModel.findOne({ name: collegeName });
 
-    if (!findCollege) return res.status(404).send({ msg: "college not found" });
+    if (!findCollege) return res.status(404).send({status:false, msg: "college not found" });
 
     data.collegeId = findCollege._id.toString();
 
