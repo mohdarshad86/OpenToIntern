@@ -7,6 +7,7 @@ let urlValidate =
   /(http[s]*:\/\/)([a-z\-_0-9\/.]+)\.([a-z.]{2,3})\/([a-z0-9\-_\/._~:?#\[\]@!$&'()*+,;=%]*)([a-z0-9]+\.)(jpg|jpeg|png)/i;
 
 const createCollege = async (req, res) => {
+  
   try {
     const data = req.body;
 
@@ -67,6 +68,8 @@ const createCollege = async (req, res) => {
 };
 
 const getCollege = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   try {
     let collegeName = req.query.collegeName;
 
@@ -96,13 +99,13 @@ const getCollege = async (req, res) => {
 
     let noInterns = `No interns applied to ${collegeName} college`;
 
-    let newData = {
+    let internsData = {
       name: findCollege.name,
       fullName: findCollege.fullName,
       logoLink: findCollege.logoLink,
       interns: interns,
     };
-    let newData2 = {
+    let noInternsData = {
       name: findCollege.name,
       fullName: findCollege.fullName,
       logoLink: findCollege.logoLink,
@@ -110,9 +113,9 @@ const getCollege = async (req, res) => {
     };
 
     if (interns.length === 0) {
-      return res.status(200).send({ status: true, data: newData2 });
+      return res.status(200).send({ status: true, data: noInternsData });
     } else {
-      return res.status(200).send({ status: true, data: newData });
+      return res.status(200).send({ status: true, data: internsData });
     }
   } catch (err) {
     console.log("error in get college", err.message);
